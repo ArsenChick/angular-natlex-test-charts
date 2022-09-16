@@ -1,0 +1,14 @@
+<div class="list-container">
+  <h1 class="mat-h1">Chart settings</h1>
+  <button mat-raised-button (click)="onAdd()">Add chart</button>
+  <mat-list>
+    <mat-list-item
+      *ngFor="let chart of charts$ | async">
+      <app-settings-card
+        [chartInfo]="chart"
+        (deleteEvent)="onDelete($event)"
+        (editEvent)="onEdit($event)">
+      </app-settings-card>
+    </mat-list-item>
+  </mat-list>
+</div>

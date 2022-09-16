@@ -1,0 +1,11 @@
+<mat-card *ngIf="chartInfo">
+  <mat-card-content>
+    <span>{{ chartInfo.settings.name }}</span>
+    <button mat-icon-button color="primary" (click)="editChart()">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-icon-button color="primary" (click)="deleteChart()">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-card-content>
+</mat-card>
