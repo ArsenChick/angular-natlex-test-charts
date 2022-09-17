@@ -1,5 +1,5 @@
 import { createAction, props } from "@ngrx/store";
-import { ChartSettings } from "../chart-settings.interface";
+import { ChartSettings } from "../interfaces/chart-settings.interface";
 
 export const addChart = createAction(
   '[Settings page] Add chart',

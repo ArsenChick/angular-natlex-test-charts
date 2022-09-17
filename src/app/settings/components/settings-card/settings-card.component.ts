@@ -1,11 +1,12 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Chart } from 'src/app/chart-settings.interface';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Chart } from 'src/app/interfaces/chart-settings.interface';
 import { deleteChart } from 'src/app/state/chart-manage.actions';
 
 @Component({
   selector: 'app-settings-card',
   templateUrl: './settings-card.component.html',
-  styleUrls: ['./settings-card.component.sass']
+  styleUrls: ['./settings-card.component.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SettingsCardComponent {
 

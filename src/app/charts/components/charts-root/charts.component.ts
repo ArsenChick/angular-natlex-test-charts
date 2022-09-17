@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { map, pipe, of, combineLatest, Observable, startWith, fromEvent, filter } from 'rxjs';
 import { Store } from '@ngrx/store';
 
@@ -6,12 +6,13 @@ import * as Highcharts from 'highcharts';
 
 import { ChartDataService } from '../../chart-data.service';
 import { selectEveryChartSettings } from 'src/app/state/chart-manage.selectrors';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-charts',
   templateUrl: './charts.component.html',
-  styleUrls: ['./charts.component.sass']
+  styleUrls: ['./charts.component.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChartsComponent implements OnInit {
 
@@ -29,7 +30,7 @@ export class ChartsComponent implements OnInit {
         startWith([])
       );
   mockSeriesData$ = of([1, 2, 3, 1, 2]);
-  chartsOptions$ = this.store.select(selectEveryChartSettings);
+  chartsSettings$ = this.store.select(selectEveryChartSettings);
 
   logChange = () => console.log('date changed');
 

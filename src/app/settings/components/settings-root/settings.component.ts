@@ -1,8 +1,9 @@
 import { ComponentType } from '@angular/cdk/portal';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { filter } from 'rxjs';
 import { Store } from '@ngrx/store';
 
-import { Chart } from 'src/app/chart-settings.interface';
+import { Chart } from 'src/app/interfaces/chart-settings.interface';
 import { addChart, deleteChart, editChart } from 'src/app/state/chart-manage.actions';
 import { selectCharts } from 'src/app/state/chart-manage.selectrors';
 
@@ -13,7 +14,8 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.sass']
+  styleUrls: ['./settings.component.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SettingsComponent {
 
@@ -24,36 +26,32 @@ export class SettingsComponent {
     private dialog: MatDialog
   ) { }
 
-  onAdd() {
-    this.store.dispatch(addChart({}));
-  }
+  // When clicked the "Add" button on page.
+  // TO DO: Maybe open up the edit dialog to choose initial settings?
+  onAdd = (): void => this.store.dispatch(addChart({}));
 
+  // When received 'delete' event from SettingsCard.
+  // Open the delete dialog and dispatches action if got confirmation.
   onDelete(idToDelete: number): void {
-    const dialogRef = this.openDialog(DeleteDialogComponent);
-    dialogRef.afterClosed().subscribe(
-      confirmed => {
-        if (confirmed)
-          this.store.dispatch(deleteChart({ idToDelete }));
-      }
-    );
+    this.openDialog(DeleteDialogComponent).afterClosed()
+      .pipe(filter(confirmed => confirmed))
+      .subscribe(() => this.store.dispatch(deleteChart({ idToDelete })));
   }
 
-  onEdit(chartDataToEdit: Chart): void {
-    const dialogRef = this.openDialog(EditDialogComponent, chartDataToEdit.settings);
-    dialogRef.afterClosed().subscribe(
-      settings => {
-        if (settings)
-          this.store.dispatch(editChart({
-            idToEdit: chartDataToEdit.id,
-            newSettings: settings
-          }));
-      }
-    );
+  // When received 'edit' event from SettingsCard.
+  // Opens the edit dialog and dispatches action if has gotten settings from it.
+  onEdit({ id, settings }: Chart): void {
+    this.openDialog(EditDialogComponent, settings).afterClosed()
+      .pipe(filter(settings => settings))
+      .subscribe(() => this.store.dispatch(editChart({ idToEdit: id, newSettings: settings })));
   }
 
-  openDialog<T>(dialogComponent: ComponentType<T>, dialogData?: any) {
+  // The generic method for opening a dialog modal.
+  // Takes the type of the component which will be shown as a parameter
+  // (along with some additional data, if necessary).
+  private openDialog<T, P>(dialogComponent: ComponentType<T>, dialogData?: P) {
     const dialogConfig = new MatDialogConfig();
-    if (dialogData) dialogConfig.data = dialogData;
+    dialogConfig.data = dialogData ?? {};
     return this.dialog.open(dialogComponent, dialogConfig);
   }
 }

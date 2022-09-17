@@ -1,34 +1,54 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
-
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import * as Highcharts from 'highcharts';
-import { ChartSettings } from 'src/app/chart-settings.interface';
+
+import { ChartSettings } from 'src/app/interfaces/chart-settings.interface';
+import { DEFAULT_CHART_SETTINGS } from 'src/app/constants';
 
 
 @Component({
   selector: 'app-chart-card',
   templateUrl: './chart-card.component.html',
-  styleUrls: ['./chart-card.component.sass']
+  styleUrls: ['./chart-card.component.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChartCardComponent {
   Highcharts: typeof Highcharts = Highcharts;
+  highchartsCompatibleOptions: Highcharts.Options = {};
+  private _seriesValues: number[] = [];
+  private _chartSettings: ChartSettings = DEFAULT_CHART_SETTINGS;
 
-  @Input() seriesValues: number[] = [];
-  @Input() chartOptions: ChartSettings = { name: 'My Chart', type: 'line', color: "#7cb5ec" };
+  @Input()
+  get seriesValues(): number[] {
+    return this._seriesValues;
+  }
+  set seriesValues(v: number[]) {
+    this._seriesValues = v;
+    this.updateHighchartsOptions();
+  }
 
-  hcInitialChartOptions: Highcharts.Options = {};
+  @Input()
+  get chartSettings(): ChartSettings {
+    return this._chartSettings;
+  }
+  set chartSettings(v: ChartSettings) {
+    this._chartSettings = v;
+    this.updateHighchartsOptions();
+  }
 
-  constructor() { }
+  constructor() {
+    this.updateHighchartsOptions();
+  }
 
-  ngOnChanges(_: SimpleChanges) {
-    const { name, type, color } = this.chartOptions;
-    this.hcInitialChartOptions = {
+  // Update Highcharts-compatible options based on private fields
+  private updateHighchartsOptions() {
+    const { name, type, color } = this._chartSettings;
+    this.highchartsCompatibleOptions = {
       title: { text: name },
       xAxis: { title: { text: "Date" }, type: "datetime" },
       series: [{
-        data: this.seriesValues,
+        data: this._seriesValues,
         name: "Temperature",
         type: type, color: color }]
     };
   }
-
 }

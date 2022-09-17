@@ -1,10 +1,8 @@
 <mat-card class="dashboard-card">
   <mat-card-content class="dashboard-card-content">
-    <highcharts-chart
+    <highcharts-chart class="highcharts-chart"
       [Highcharts]="Highcharts"
-      [options]="hcInitialChartOptions"
-
-      style="width: 100%; height: 200px; display: block;"
+      [options]="highchartsCompatibleOptions"
     ></highcharts-chart>
   </mat-card-content>
 </mat-card>

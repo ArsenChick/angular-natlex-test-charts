@@ -1,18 +1,19 @@
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { ChartSettings } from 'src/app/chart-settings.interface';
-import { CHART_TYPES } from 'src/app/constants';
+import { ChartSettings } from 'src/app/interfaces/chart-settings.interface';
+import { ChartTypes } from 'src/app/constants';
 
 @Component({
   selector: 'app-edit-dialog',
   templateUrl: './edit-dialog.component.html',
-  styleUrls: ['./edit-dialog.component.sass']
+  styleUrls: ['./edit-dialog.component.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditDialogComponent {
 
-  chartTypes = CHART_TYPES;
+  chartTypes = Object.values(ChartTypes);
   form: FormGroup;
 
   constructor(

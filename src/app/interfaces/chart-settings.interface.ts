@@ -1,4 +1,4 @@
-import { CHART_TYPE_LITERALS } from "./constants";
+import { ChartTypes } from "../constants";
 
 export interface Chart {
   id: number;
@@ -7,6 +7,6 @@ export interface Chart {
 
 export interface ChartSettings {
   name: string,
-  type: typeof CHART_TYPE_LITERALS[number],
+  type: ChartTypes,
   color: string,
 }

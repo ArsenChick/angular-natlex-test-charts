@@ -1,5 +1,5 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
-import { Chart } from "../chart-settings.interface";
+import { Chart } from "../interfaces/chart-settings.interface";
 
 export const selectCharts = createFeatureSelector<ReadonlyArray<Chart>>('charts');
 export const selectEveryChartSettings = createSelector(

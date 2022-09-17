@@ -1,6 +1,6 @@
 <div class="grid-container">
   <h1 class="mat-h1">Charts</h1>
-  <div *ngIf="(chartsOptions$ | async)?.length !== 0">
+  <div *ngIf="(chartsSettings$ | async)?.length !== 0">
     <mat-form-field appearance="fill">
       <mat-label>Enter a date range</mat-label>
       <mat-date-range-input [formGroup]="dateRange" (dateChange)="logChange()"
@@ -18,11 +18,11 @@
   <mat-grid-list cols="2" rowHeight="350px">
     <div *ngIf="mockSeriesData$ | async as seriesData">
       <mat-grid-tile
-        *ngFor="let chartOptionSet of chartsOptions$ | async"
+        *ngFor="let chartSettingsSet of chartsSettings$ | async"
         [colspan]="1" [rowspan]="1">
         <app-chart-card
           [seriesValues]="seriesData"
-          [chartOptions]="chartOptionSet">
+          [chartSettings]="chartSettingsSet">
         </app-chart-card>
       </mat-grid-tile>
     </div>

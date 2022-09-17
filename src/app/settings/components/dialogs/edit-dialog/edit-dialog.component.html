@@ -11,9 +11,9 @@
     <mat-form-field appearance="fill">
       <mat-label>Chart type</mat-label>
       <mat-select formControlName="type">
-        <mat-option value="line">Line</mat-option>
-        <mat-option value="spline">Spline</mat-option>
-        <mat-option value="area">Area</mat-option>
+        <mat-option *ngFor="let chartType of chartTypes" [value]="chartType">
+          {{chartType | titlecase}}
+        </mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field>
