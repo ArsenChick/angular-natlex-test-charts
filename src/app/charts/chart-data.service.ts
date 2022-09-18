@@ -9,9 +9,7 @@ import {
   WeatherRequestParamsLiterals
 } from '../constants';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class ChartDataService {
 
   startDate: string = '';

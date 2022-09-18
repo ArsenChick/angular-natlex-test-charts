@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { chartManageReducer } from './state/chart-manage.reducer';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SharedModule } from './shared/shared.module';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    SharedModule,
     StoreModule.forRoot({ charts: chartManageReducer }),
     BrowserAnimationsModule,
   ],

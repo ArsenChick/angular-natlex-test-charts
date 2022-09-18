@@ -1,6 +1,6 @@
 <form [formGroup]="form" (submit)="onSave()">
   <h2 mat-dialog-title>Edit chart</h2>
-  <mat-dialog-content>
+  <mat-dialog-content class="edit-form">
     <mat-form-field>
       <mat-label>Chart name</mat-label>
       <input matInput formControlName="name">
@@ -8,7 +8,7 @@
         Name is <strong>required</strong>
       </mat-error>
     </mat-form-field>
-    <mat-form-field appearance="fill">
+    <mat-form-field>
       <mat-label>Chart type</mat-label>
       <mat-select formControlName="type">
         <mat-option *ngFor="let chartType of chartTypes" [value]="chartType">

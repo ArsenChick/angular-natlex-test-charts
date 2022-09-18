@@ -16,11 +16,12 @@
     </mat-form-field>
   </div>
   <mat-grid-list cols="2" rowHeight="350px">
-    <div *ngIf="mockSeriesData$ | async as seriesData">
-      <mat-grid-tile
+    <div *ngIf="seriesData$ | async as seriesData">
+      <mat-grid-tile class="chart-grid-tile"
         *ngFor="let chartSettingsSet of chartsSettings$ | async"
         [colspan]="1" [rowspan]="1">
         <app-chart-card
+          class="app-chart-card"
           [seriesValues]="seriesData"
           [chartSettings]="chartSettingsSet">
         </app-chart-card>

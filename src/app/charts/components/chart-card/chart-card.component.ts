@@ -14,22 +14,23 @@ import { DEFAULT_CHART_SETTINGS } from 'src/app/constants';
 export class ChartCardComponent {
   Highcharts: typeof Highcharts = Highcharts;
   highchartsCompatibleOptions: Highcharts.Options = {};
+
   private _seriesValues: number[] = [];
   private _chartSettings: ChartSettings = DEFAULT_CHART_SETTINGS;
 
-  @Input()
   get seriesValues(): number[] {
     return this._seriesValues;
   }
+  @Input()
   set seriesValues(v: number[]) {
     this._seriesValues = v;
     this.updateHighchartsOptions();
   }
 
-  @Input()
   get chartSettings(): ChartSettings {
     return this._chartSettings;
   }
+  @Input()
   set chartSettings(v: ChartSettings) {
     this._chartSettings = v;
     this.updateHighchartsOptions();
@@ -44,11 +45,27 @@ export class ChartCardComponent {
     const { name, type, color } = this._chartSettings;
     this.highchartsCompatibleOptions = {
       title: { text: name },
-      xAxis: { title: { text: "Date" }, type: "datetime" },
+      xAxis: {
+        title: { text: 'Date' },
+        type: 'datetime',
+        labels: { format: '{value: %m/%d/%Y}' },
+      },
+      tooltip: {
+        useHTML: true,
+				headerFormat: '<div>{point.x: %m/%d/%Y}</div>',
+        valueSuffix: '°C'
+      },
+      yAxis: {
+        title: { text: 'Temperature'},
+        labels: { format: '{value} °C' }
+      },
       series: [{
         data: this._seriesValues,
-        name: "Temperature",
-        type: type, color: color }]
+        pointStart: new Date().valueOf(),
+        pointIntervalUnit: 'day',
+        name: 'Max temperature',
+        type: type, color: color
+      }]
     };
   }
 }

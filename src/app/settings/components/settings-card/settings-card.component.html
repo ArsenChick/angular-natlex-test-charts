@@ -1,6 +1,7 @@
-<mat-card *ngIf="chartInfo">
-  <mat-card-content>
-    <span>{{ chartInfo.settings.name }}</span>
+<mat-card *ngIf="chartInfo" class="settings-card-container">
+  <mat-card-content class="settings-card-content">
+    <h3>{{ chartInfo.settings.name }}</h3>
+    <div class="separator"></div>
     <button mat-icon-button color="primary" (click)="editChart()">
       <mat-icon>edit</mat-icon>
     </button>

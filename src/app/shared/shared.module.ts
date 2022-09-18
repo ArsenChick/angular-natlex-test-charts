@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { SharedRoutingModule } from './shared-routing.module';
 import { TopBarComponent } from './components/top-bar/top-bar.component';
 
 import { LayoutModule } from '@angular/cdk/layout';
@@ -12,9 +11,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   declarations: [
     TopBarComponent,
   ],
+  exports: [
+    TopBarComponent,
+  ],
   imports: [
     CommonModule,
-    SharedRoutingModule,
     LayoutModule,
     MatToolbarModule,
   ],
