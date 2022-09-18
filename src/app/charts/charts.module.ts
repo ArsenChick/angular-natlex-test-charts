@@ -18,12 +18,14 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { ChartDatepickerComponent } from './components/chart-datepicker/chart-datepicker.component';
 
 
 @NgModule({
   declarations: [
     ChartsComponent,
     ChartCardComponent,
+    ChartDatepickerComponent,
   ],
   imports: [
     CommonModule,

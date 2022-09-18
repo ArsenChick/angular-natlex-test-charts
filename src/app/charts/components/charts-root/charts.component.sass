@@ -1,7 +1,18 @@
 .grid-container
   margin: 20px
 
-.app-chart-card
-  width: calc(100% - 2em)
-  height: calc(100% - 2em)
-  margin: 1em
+.chart-grid-list
+  display: flex
+  flex-wrap: wrap
+
+  app-chart-card
+    width: calc(50% - 2em)
+    height: calc(100% - 2em)
+    margin: 1em
+
+@media (max-width: 800px)
+  .chart-grid-list
+    app-chart-card
+      margin: 0
+      margin-bottom: 1em
+      width: 100%

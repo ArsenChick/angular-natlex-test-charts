@@ -1,6 +1,6 @@
 import { ComponentType } from '@angular/cdk/portal';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { filter } from 'rxjs';
+import { filter, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { Chart } from 'src/app/interfaces/chart-settings.interface';
@@ -43,7 +43,7 @@ export class SettingsComponent {
   onEdit({ id, settings }: Chart): void {
     this.openDialog(EditDialogComponent, settings).afterClosed()
       .pipe(filter(settings => settings))
-      .subscribe(() => this.store.dispatch(editChart({ idToEdit: id, newSettings: settings })));
+      .subscribe((newSettings) => this.store.dispatch(editChart({ idToEdit: id, newSettings })));
   }
 
   // The generic method for opening a dialog modal.

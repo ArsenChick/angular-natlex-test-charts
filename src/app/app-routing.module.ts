@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { APP_ROUTES } from './constants';
 
 const routes: Routes = [
-  { path: '', loadChildren: () => import('./shared/shared.module').then(m => m.SharedModule) },
+  { path: '', redirectTo: `/${APP_ROUTES.charts}`, pathMatch: 'full' },
   {
     path: APP_ROUTES.charts,
     loadChildren: () => import('./charts/charts.module').then(m => m.ChartsModule)
@@ -12,7 +12,6 @@ const routes: Routes = [
     path: APP_ROUTES.settings,
     loadChildren: () => import('./settings/settings.module').then(m => m.SettingsModule)
   },
-  { path: '', redirectTo: `/${APP_ROUTES.charts}`, pathMatch: 'full' },
   { path: '**', redirectTo: `/${APP_ROUTES.charts}`, pathMatch: 'full' }
 ];
 
