@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { map, of, Observable, startWith } from 'rxjs';
+import { map, Observable, of, startWith, Subject, switchMap } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { ChartDataService } from '../../chart-data.service';
 import { selectEveryChartSettings } from 'src/app/state/chart-manage.selectrors';
+import { DateRangePickerValue } from '../../interfaces/date-picker-value.interface';
 
 @Component({
   selector: 'app-charts',
@@ -13,36 +14,39 @@ import { selectEveryChartSettings } from 'src/app/state/chart-manage.selectrors'
 })
 export class ChartsComponent implements OnInit {
 
-  testObservable$: Observable<any> = of([]);
+  public chartsSettings$ = this.store.select(selectEveryChartSettings);
+  public seriesData$ = new Observable<number[]>();
+  public chartAxisStartDate = new Date();
 
-  seriesData$: Observable<number[]> =
-    this.chartDataService.getWeatherData("2022-09-01", "2022-09-14")
-      .pipe(
-        map(({ daily }) => daily.temperature_2m_max ),
-        startWith([])
-      );
-  mockSeriesData$ = of([1, 2, 3, 1, 2]);
-  chartsSettings$ = this.store.select(selectEveryChartSettings);
+  private filterSubject$ = new Subject<DateRangePickerValue>();
 
-  logChange = ({start, end}: any) => console.log(`${start.toDateString()} ${end.toDateString()}`);
+  private getFormattedDataString = (date: Date): string => {
+    const formattedMonth = date.getMonth().toString().padStart(2, '0');
+    const formattedDay = date.getDate().toString().padStart(2, '0');
+    return `${date.getFullYear()}-${formattedMonth}-${formattedDay}`;
+  }
+
+  public updateDateRange(dateRangeValue: DateRangePickerValue): void {
+    this.chartAxisStartDate = dateRangeValue.start;
+    this.filterSubject$.next(dateRangeValue);
+  }
 
   constructor(
     private store: Store,
     private chartDataService: ChartDataService
-  ) {
-    // const dateStartInput$ = start.valueChanges
-    //   .pipe(filter(change => change !== null), startWith(startDate));
-    // const dateEndInput$ = end.valueChanges
-    //   .pipe(filter(change => change !== null), startWith(this.maxDate));
-
-    // this.testObservable$ = combineLatest([dateStartInput$, dateEndInput$]).pipe(
-    //   map(([sD, eD]) => [sD?.toDateString(), eD?.toDateString()])
-    // );
-  }
+  ) { }
 
   ngOnInit() {
-    this.testObservable$.subscribe(
-      value => console.log(`change detected! value is ${value}`)
-    )
+    this.seriesData$ = this.filterSubject$.asObservable().pipe(
+      map(({ start, end }) => {
+        return {
+          start: this.getFormattedDataString(start),
+          end: this.getFormattedDataString(end),
+        };
+      }),
+      switchMap(({ start, end }) => this.chartDataService.getWeatherData(start, end)),
+      map(({ daily }) => daily.temperature_2m_max ),
+      startWith([]),
+    );
   }
 }

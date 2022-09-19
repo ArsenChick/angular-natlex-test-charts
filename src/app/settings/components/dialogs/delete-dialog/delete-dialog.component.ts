@@ -5,7 +5,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 @Component({
   selector: 'app-delete-dialog',
   templateUrl: './delete-dialog.component.html',
-  styleUrls: ['./delete-dialog.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DeleteDialogComponent {
@@ -15,6 +14,6 @@ export class DeleteDialogComponent {
     @Inject(MAT_DIALOG_DATA) _: any
   ) { }
 
-  onDelete = () => this.dialogRef.close(true);
-  onCancel = () => this.dialogRef.close();
+  public onDelete = (): void => this.dialogRef.close(true);
+  public onCancel = (): void => this.dialogRef.close();
 }

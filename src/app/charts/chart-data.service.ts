@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { catchError, retry, throwError, map, tap } from 'rxjs';
+import { catchError, retry, throwError, map, tap, Observable } from 'rxjs';
 
-import { JSONWeatherResponse } from '../interfaces/json-weather-data.interface';
+import { JSONWeatherResponse } from './interfaces/json-weather-data.interface';
 import {
   REQUEST_BASE_URL,
   WeatherRequestConstParams,
@@ -12,8 +12,8 @@ import {
 @Injectable()
 export class ChartDataService {
 
-  startDate: string = '';
-  endDate: string = '';
+  public startDate: string = '';
+  public endDate: string = '';
 
   // Constructing HttpParams entity for our request
   private constRequestParams: HttpParams = new HttpParams()
@@ -24,7 +24,9 @@ export class ChartDataService {
 
   constructor(private http: HttpClient) { }
 
-  getWeatherData(startDate: string, endDate: string) {
+  public getWeatherData(
+    startDate: string, endDate: string
+  ): Observable<JSONWeatherResponse> {
     // As HttpParams is immutable class, constRequestParams stays the same
     const requestParams = this.constRequestParams
       .set(WeatherRequestParamsLiterals.StartDate, startDate)
@@ -33,13 +35,12 @@ export class ChartDataService {
 
     // Retry request up to three times and handle errors
     return this.http.get<JSONWeatherResponse>(url).pipe(
-      tap(_ => console.log('fetched data')),
       retry(3),
       catchError(this.handleError),
     );
   }
 
-  private handleError(error: HttpErrorResponse) {
+  private handleError(error: HttpErrorResponse): Observable<never> {
     if (error.status === 0) {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error);

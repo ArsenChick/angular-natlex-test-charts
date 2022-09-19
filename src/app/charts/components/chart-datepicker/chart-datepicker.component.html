@@ -1,23 +1,21 @@
-<mat-form-field appearance="fill">
-  <mat-label>Enter a date range</mat-label>
+<div class="datepicker-container">
+  <mat-form-field appearance="fill">
+    <mat-label>Enter a date range</mat-label>
 
-  <mat-date-range-input [formGroup]="dateRange" [required]="true"
-    [rangePicker]="picker" [min]="minDate" [max]="maxDate">
-    <input matStartDate formControlName="start"
-      placeholder="Start date" (dateChange)="changeDate('start', $event)">
-    <input matEndDate formControlName="end"
-      placeholder="End date" (dateChange)="changeDate('end', $event)">
-  </mat-date-range-input>
-  <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-  <mat-date-range-picker #picker></mat-date-range-picker>
+    <mat-date-range-input [formGroup]="dateRange"
+      [rangePicker]="picker" [min]="minDate" [max]="maxDate">
+      <input matStartDate formControlName="start"
+        placeholder="Start date">
+      <input matEndDate formControlName="end"
+        placeholder="End date">
+    </mat-date-range-input>
+    <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker [disabled]="false"></mat-date-range-picker>
 
-  <mat-error *ngIf="dateRange.controls['start'].hasError('matStartDateInvalid')">Invalid start date</mat-error>
-  <mat-error *ngIf="dateRange.controls['end'].hasError('matEndDateInvalid')">Invalid end date</mat-error>
-</mat-form-field>
-<button
-  mat-fab color="primary"
-  [disabled]="!dateRange.valid"
-  (click)="filter()">
-  <mat-icon>filter_list</mat-icon>
-</button>
+  </mat-form-field>
+  <button mat-fab color="primary" class="filter-button"
+    (click)="filter()" [disabled]="!canFilterDates()">
+    <mat-icon>filter_list</mat-icon>
+  </button>
+</div>

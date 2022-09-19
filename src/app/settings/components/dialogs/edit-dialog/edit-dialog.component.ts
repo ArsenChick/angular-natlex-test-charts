@@ -13,8 +13,8 @@ import { ChartTypes } from 'src/app/constants';
 })
 export class EditDialogComponent {
 
-  chartTypes = Object.values(ChartTypes);
-  form: FormGroup;
+  public chartTypes = Object.values(ChartTypes);
+  public form: FormGroup = new FormGroup({});
 
   constructor(
     private fb: FormBuilder,
@@ -27,6 +27,6 @@ export class EditDialogComponent {
     });
   }
 
-  onSave = () => this.dialogRef.close(this.form.value);
-  onCancel = () => this.dialogRef.close();
+  public onSave = (): void => this.dialogRef.close(this.form.value);
+  public onCancel = (): void => this.dialogRef.close();
 }

@@ -1,14 +1,18 @@
 <div class="grid-container">
   <h1 class="mat-h1">Charts</h1>
-  <div *ngIf="(chartsSettings$ | async)?.length !== 0">
-    <app-chart-datepicker (filterEvent)="logChange($event)"></app-chart-datepicker>
+  <div *ngIf="(chartsSettings$ | async)?.length !== 0; else noCharts">
+    <app-chart-datepicker (filterEvent)="updateDateRange($event)"></app-chart-datepicker>
   </div>
+  <ng-template #noCharts>
+    <p class="no-charts">No charts yet! Go to settings to create one</p>
+  </ng-template>
   <div class="chart-grid-list"
-    *ngIf="mockSeriesData$ | async as seriesData">
+    *ngIf="seriesData$ | async as seriesData">
     <app-chart-card
       *ngFor="let chartSettingsSet of chartsSettings$ | async"
       [seriesValues]="seriesData"
-      [chartSettings]="chartSettingsSet">
+      [chartSettings]="chartSettingsSet"
+      [chartAxisStartDate]="chartAxisStartDate">
     </app-chart-card>
   </div>
 </div>

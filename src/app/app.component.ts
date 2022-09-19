@@ -8,6 +8,6 @@ import { APP_ROUTES } from './constants';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
-  routerLinkToCharts: string = `/${APP_ROUTES.charts}`;
-  routerLinkToSettings: string = `/${APP_ROUTES.settings}`;
+  public routerLinkToCharts: string = `/${APP_ROUTES.charts}`;
+  public routerLinkToSettings: string = `/${APP_ROUTES.settings}`;
 }

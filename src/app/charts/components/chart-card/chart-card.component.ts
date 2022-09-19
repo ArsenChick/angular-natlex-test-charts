@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import * as Highcharts from 'highcharts';
 
 import { ChartSettings } from 'src/app/interfaces/chart-settings.interface';
-import { DEFAULT_CHART_SETTINGS } from 'src/app/constants';
+import { DEFAULT_CHART_SETTINGS, DEFAULT_DATE_RANGE_LENGTH, TIMEZONE_HOURS_DIFFERENCE } from 'src/app/constants';
 
 
 @Component({
@@ -12,11 +12,13 @@ import { DEFAULT_CHART_SETTINGS } from 'src/app/constants';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChartCardComponent {
-  Highcharts: typeof Highcharts = Highcharts;
-  highchartsCompatibleOptions: Highcharts.Options = {};
+  public Highcharts: typeof Highcharts = Highcharts;
+  public highchartsCompatibleOptions: Highcharts.Options = {};
 
   private _seriesValues: number[] = [];
   private _chartSettings: ChartSettings = DEFAULT_CHART_SETTINGS;
+  private _chartAxisStartDate: Date =
+    new Date(new Date().setDate(-DEFAULT_DATE_RANGE_LENGTH));
 
   get seriesValues(): number[] {
     return this._seriesValues;
@@ -36,19 +38,29 @@ export class ChartCardComponent {
     this.updateHighchartsOptions();
   }
 
-  constructor() {
+  get chartAxisStartDate(): Date {
+    return this._chartAxisStartDate;
+  }
+  @Input()
+  set chartAxisStartDate(v: Date) {
+    this._chartAxisStartDate = v;
+    this._chartAxisStartDate.setHours(TIMEZONE_HOURS_DIFFERENCE);
+    this.updateHighchartsOptions();
+  }
+
+  ngOnInit() {
     this.updateHighchartsOptions();
   }
 
   // Update Highcharts-compatible options based on private fields
-  private updateHighchartsOptions() {
+  private updateHighchartsOptions(): void {
     const { name, type, color } = this._chartSettings;
     this.highchartsCompatibleOptions = {
       title: { text: name },
       xAxis: {
         title: { text: 'Date' },
         type: 'datetime',
-        labels: { format: '{value: %m/%d/%Y}' },
+        labels: { format: '{value: %m/%d}' },
       },
       tooltip: {
         useHTML: true,
@@ -61,7 +73,7 @@ export class ChartCardComponent {
       },
       series: [{
         data: this._seriesValues,
-        pointStart: new Date().valueOf(),
+        pointStart: this._chartAxisStartDate.valueOf(),
         pointIntervalUnit: 'day',
         name: 'Max temperature',
         type: type, color: color

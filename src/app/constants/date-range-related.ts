@@ -1,0 +1,3 @@
+export const MAX_DATE_RANGE_LENGTH = 40;
+export const DEFAULT_DATE_RANGE_LENGTH = 10;
+export const TIMEZONE_HOURS_DIFFERENCE = 3;
